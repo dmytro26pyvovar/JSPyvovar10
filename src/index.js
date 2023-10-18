@@ -47,9 +47,38 @@ function clearCatInfo() {
   breedName.textContent = "";
   description.textContent = "";
   temperament.textContent = "";
-  catInfo.removeChild(catInfo.firstChild);
+  catInfo.innerHTML = '';
   
 };
+
+
+
+breedSelect.addEventListener("change", (event) => {
+  const selectedBreedId = event.target.value;
+  clearCatInfo();
+  
+  
+  fetchCatByBreed(selectedBreedId)
+  .then((cats) => {
+    if (cats.length > 0) {
+      const cat = cats[0];
+      breedName.textContent = "Breed: " + cat.breeds[0].name;
+      description.textContent = "Description: " + cat.breeds[0].description;
+      temperament.textContent = "Temperament: " + cat.breeds[0].temperament;
+      
+      const catImage = document.createElement("img");
+      catImage.src = cat.url;
+      catInfo.appendChild(catImage);
+
+      catInfo.style.display = "block";
+    } else {
+      Notiflix.Notify.failure("Котів не знайдено.");
+    }
+  })
+    .catch((error) => {
+      
+    });
+});
 
 fetchBreeds()
   .then((breeds) => {
@@ -63,34 +92,8 @@ fetchBreeds()
   .catch((error) => {
   
   });
-
-breedSelect.addEventListener("change", (event) => {
-  const selectedBreedId = event.target.value;
-
-  clearCatInfo();
-
-  fetchCatByBreed(selectedBreedId)
-    .then((cats) => {
-      if (cats.length > 0) {
-        const cat = cats[0];
-        breedName.textContent = "Breed: " + cat.breeds[0].name;
-        description.textContent = "Description: " + cat.breeds[0].description;
-        temperament.textContent = "Temperament: " + cat.breeds[0].temperament;
-        
-        const catImage = document.createElement("img");
-        catImage.src = cat.url;
-        catInfo.appendChild(catImage);
-
-        catInfo.style.display = "block";
-      } else {
-        Notiflix.Notify.failure("Котів не знайдено.");
-      }
-    })
-    .catch((error) => {
-      
-    });
-});
-
+  
+  
 
 
 
