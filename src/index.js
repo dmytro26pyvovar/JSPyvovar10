@@ -35,14 +35,21 @@ const loaderText = document.querySelector(".loader")
 catInfo.style.display = "none";
 error.style.display = "none";
 
-
+window.addEventListener("load", () => {
+  const loaderText = document.querySelector(".loader");
+   if (loaderText) {
+    loaderText.style.display = "none";
+  }
+});
 
 function clearCatInfo() {
   catInfo.style.display = "none";
   breedName.textContent = "";
   description.textContent = "";
   temperament.textContent = "";
-}
+  catInfo.removeChild(catInfo.firstChild);
+  
+};
 
 fetchBreeds()
   .then((breeds) => {
@@ -54,7 +61,7 @@ fetchBreeds()
     });
   })
   .catch((error) => {
-
+  
   });
 
 breedSelect.addEventListener("change", (event) => {
@@ -69,14 +76,18 @@ breedSelect.addEventListener("change", (event) => {
         breedName.textContent = "Breed: " + cat.breeds[0].name;
         description.textContent = "Description: " + cat.breeds[0].description;
         temperament.textContent = "Temperament: " + cat.breeds[0].temperament;
-          catInfo.style.display = "block";
-          loaderText.style.display = "none";
+        
+        const catImage = document.createElement("img");
+        catImage.src = cat.url;
+        catInfo.appendChild(catImage);
+
+        catInfo.style.display = "block";
       } else {
         Notiflix.Notify.failure("Котів не знайдено.");
       }
     })
     .catch((error) => {
-    
+      
     });
 });
 
