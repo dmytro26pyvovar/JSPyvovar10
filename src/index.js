@@ -59,9 +59,9 @@ breedSelect.addEventListener("change", (event) => {
   
   
   fetchCatByBreed(selectedBreedId)
-  .then((cats) => {
-    if (cats.length > 0) {
-      const cat = cats[0];
+  .then((cat) => {
+    if (cat.length > 0) {
+      const cat = cat[0].breeds[0];
       breedName.textContent = "Breed: " + cat.breeds[0].name;
       description.textContent = "Description: " + cat.breeds[0].description;
       temperament.textContent = "Temperament: " + cat.breeds[0].temperament;
